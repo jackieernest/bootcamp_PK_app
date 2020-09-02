@@ -2,11 +2,30 @@ library(shiny)
 library(shinythemes)
 library(shinydashboard)
 
+simtab <- read.csv("simtab.csv")
+
 body <- dashboardBody(
  fluidRow(
    column(width=3,
       box(title="About", width=NULL, solidHeader = T, status="primary", collapsible = T, collapsed=T,
           "This Shiny App was developed to be used as an educational tool to understand common PK concepts. Adapted from PMX solutions."), 
+      box(
+        title = "Observed Data", width = NULL, solidHeader = TRUE, collapsible=T, collapsed=T,
+        radioButtons(inputId = 'DOSE',
+                     label = 'Dose',
+                     choiceNames = list('All', '300mg', '600mg', '900mg'),
+                     choiceValues = list(0,300,600,900)),
+        ## SEX
+        radioButtons(inputId = 'SEX',
+                     label = 'Sex',
+                     choiceNames = list('All', 'Male', 'Female'),
+                     choiceValues = list(2,1,0)),
+        ## HIV status
+        radioButtons(inputId = 'HIV',
+                     label = 'HIV Status',
+                     choiceNames = list('All', 'Negative', 'Positive'),
+                     choiceValues = list(2,0,1))
+      ),
       box(
        title = "Basic simulation information", width = NULL, solidHeader = TRUE, collapsible=T, collapsed=T,
        radioButtons(inputId = 'admin',
@@ -288,10 +307,47 @@ server <- function(input, output) {
     
   })
   
+  Obs_df <- reactive({
+    #################################################################  
+    ## Subset observed simtab
+    
+    iDOSE <- input$DOSE
+    iSEX <- input$SEX
+    iHIV <- input$HIV
+    
+    if(iDOSE == 0){
+      Obs_df <- simtab
+      }
+    else {
+      Obs_df <- simtab %>%
+        filter(DOSE == iDOSE)
+    }
+    if(iSEX == 2){
+      Obs_df <- Obs_df
+    }
+    else {
+      Obs_df <- Obs_df %>%
+        filter(SEX == iSEX)
+    }
+    if(iHIV == 2){
+      Obs_df <- Obs_df
+    }
+    else {
+      Obs_df <- Obs_df %>%
+        filter(HIV == iHIV)
+    }
+    return(Obs_df)
+  })
+  
+  output$Obs_df <- renderDataTable({Obs_df()})
   
   output$simPlot <- renderPlot({
     
     ggplot(sum_stat(), aes(x=time,y=Median_C)) +
+      
+      ## Plot Observed Data
+      geom_point(data=Obs_df(), aes(x=TIME, y=DV), alpha = 0.2, color = 'grey') + 
+      geom_line(data=Obs_df(), aes(x=TIME, y=DV, group=factor(ID)), alpha = 0.2, color = 'grey') +
       
       ## Add ribbon for variability
       geom_ribbon(aes(ymin=Low_percentile, ymax=High_percentile, x=time), alpha = 0.3, linetype=0)+
@@ -304,7 +360,7 @@ server <- function(input, output) {
       # Set axis and theme
       ylab(paste("Plasma Concentration (mg/L)",sep=""))+
       xlab("Time after dose (h)")+
-      scale_x_continuous(breaks = seq(0,1000*24,24), limits = c(0.5,NA))+
+      scale_x_continuous(breaks = seq(0,24,3))+
       theme_bw(base_size = 14)+
       
       # Remove legend
@@ -315,6 +371,10 @@ server <- function(input, output) {
   output$simPlot2 <- renderPlot({
     
     ggplot(sum_stat(), aes(x=time,y=Median_C)) +
+      
+      ## Plot Observed Data
+      geom_point(data=Obs_df(), aes(x=TIME, y=DV), alpha = 0.2, color = 'grey') + 
+      geom_line(data=Obs_df(), aes(x=TIME, y=DV, group=factor(ID)), alpha = 0.2, color = 'grey') +
       
       ## Add ribbon for variability
       geom_ribbon(aes(ymin=Low_percentile, ymax=High_percentile, x=time), alpha = 0.3, linetype=0)+
@@ -328,7 +388,7 @@ server <- function(input, output) {
       # Set axis and theme
       ylab(paste("log10 Plasma Concentration (mg/L)",sep=""))+
       xlab("Time after dose (h)")+
-      scale_x_continuous(breaks = seq(0,1000*24,24),limits = c(0.5,NA))+
+      scale_x_continuous(breaks = seq(0,24,3))+
       theme_bw(base_size=14)+
       
       # Remove legend
