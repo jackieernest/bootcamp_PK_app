@@ -11,6 +11,11 @@ body <- dashboardBody(
           "This Shiny App was developed as an educational tool to understand common PK concepts. Adapted from PMX solutions."), 
       box(
         title = "Observed Data", width = NULL, solidHeader = TRUE, collapsible=T, collapsed=T,
+        radioButtons(inputId = 'Plot',
+                     label = 'Plot?',
+                     choiceNames = list('Yes', 'No'),
+                     choiceValues = list(T,F),
+                     selected = F),
         radioButtons(inputId = 'DOSE',
                      label = 'Dose',
                      choiceNames = list('All', '300mg', '600mg', '900mg'),
@@ -336,6 +341,9 @@ server <- function(input, output) {
     else {
       Obs_df <- Obs_df %>%
         filter(HIV == iHIV)
+    }
+    if(input$Plot == F){
+      Obs_df <- Obs_df[0,]
     }
     return(Obs_df)
   })
