@@ -68,8 +68,8 @@ body <- dashboardBody(
                    label = 'Bioavailability (F)',
                    value = 1, min = 0, max = 1),
        #checkbox - 1 cmt or 2 cmt?
-       numericInput("v2", label='Peripheral volume', value = 10,min=0),
-       numericInput("q1", label='Inter-compartmental clearance', value = 0,min=0)
+       # numericInput("v2", label='Peripheral volume', value = 10,min=0),
+       # numericInput("q1", label='Inter-compartmental clearance', value = 0,min=0)
      ),
      box(
        title = "Variability", width = NULL, collapsible=T,collapsed=T,solidHeader = TRUE,
@@ -174,8 +174,8 @@ server <- function(input, output) {
     ka  <- input$ka # Absorption rate constant
     cl  <- input$cl # Clearance
     vd  <- input$v1 # Central distribution volume
-    vd2 <- input$v2 # Peripheral distribution volume
-    q1  <- input$q1 # Inter-compartmental clearance (set to 0 for 1-cmt model)
+    vd2 <- 1 # input$v2 # Peripheral distribution volume
+    q1  <- 0 # input$q1 # Inter-compartmental clearance (set to 0 for 1-cmt model)
     f1  <- input$f1 # Bioavailability
     
     ###############################################
