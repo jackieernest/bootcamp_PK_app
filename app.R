@@ -347,8 +347,8 @@ server <- function(input, output) {
     ggplot(sum_stat(), aes(x=time,y=Median_C)) +
       
       ## Plot Observed Data
-      geom_point(data=Obs_df(), aes(x=TIME, y=DV), alpha = 0.2, color = 'grey') + 
-      geom_line(data=Obs_df(), aes(x=TIME, y=DV, group=factor(ID)), alpha = 0.2, color = 'grey') +
+      geom_point(data=Obs_df(), aes(x=TIME, y=DV), alpha = 0.6, color = 'grey') + 
+      geom_line(data=Obs_df(), aes(x=TIME, y=DV, group=factor(ID)), alpha = 0.6, color = 'grey') +
       
       ## Add ribbon for variability
       geom_ribbon(aes(ymin=Low_percentile, ymax=High_percentile, x=time), alpha = 0.3, linetype=0)+
@@ -374,8 +374,8 @@ server <- function(input, output) {
     ggplot(sum_stat(), aes(x=time,y=Median_C)) +
       
       ## Plot Observed Data
-      geom_point(data=Obs_df(), aes(x=TIME, y=DV), alpha = 0.2, color = 'grey') + 
-      geom_line(data=Obs_df(), aes(x=TIME, y=DV, group=factor(ID)), alpha = 0.2, color = 'grey') +
+      geom_point(data=Obs_df(), aes(x=TIME, y=DV), alpha = 0.6, color = 'grey') + 
+      geom_line(data=Obs_df(), aes(x=TIME, y=DV, group=factor(ID)), alpha = 0.6, color = 'grey') +
       
       ## Add ribbon for variability
       geom_ribbon(aes(ymin=Low_percentile, ymax=High_percentile, x=time), alpha = 0.3, linetype=0)+
