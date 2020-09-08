@@ -71,7 +71,7 @@ body <- dashboardBody(
        ## F
        sliderInput(inputId='f1',
                    label = 'Bioavailability (F)',
-                   value = 1, min = 0, max = 1),
+                   value = 1, min = 0, max = 1)
        #checkbox - 1 cmt or 2 cmt?
        # numericInput("v2", label='Peripheral volume', value = 10,min=0),
        # numericInput("q1", label='Inter-compartmental clearance', value = 0,min=0)
