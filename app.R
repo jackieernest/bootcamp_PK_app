@@ -53,7 +53,7 @@ body <- dashboardBody(
        ## clearance
        sliderInput(inputId='cl',
                    label = 'Clearance - CL (L/h)',
-                   value = 50, min = 1, max = 100),
+                   value = 50, min = 1, max = 300),
        ## volume
        sliderInput(inputId='v1',
                    label = 'Volume - Vc (L)',
@@ -69,7 +69,7 @@ body <- dashboardBody(
                    value = 1, min = 0, max = 1),
        #checkbox - 1 cmt or 2 cmt?
        numericInput("v2", label='Peripheral volume', value = 10,min=0),
-       numericInput("q1", label='Inter-compartmental clearance', value = 10,min=0)
+       numericInput("q1", label='Inter-compartmental clearance', value = 0,min=0)
      ),
      box(
        title = "Variability", width = NULL, collapsible=T,collapsed=T,solidHeader = TRUE,
@@ -89,16 +89,17 @@ body <- dashboardBody(
        h5("Predictive Interval"),
        numericInput("minprob", label='Minimal probability', value = 0.05,min=0,max=1,step=0.05),
        numericInput("maxprob", label='Maximal probability', value = 0.95,min=0,max=1,step=0.05),
-       br(),
-       h5("Units"),
-       numericInput('convert', label = 'Drug MW (g/mol) (optional)',
-                    value=0, min=0),
-       radioButtons('uM', label = "convert to uM", choices = list("yes","no"), selected = list("no")),
-       br(),
-       h5("Aesthetics"),
-       radioButtons('geom', label = "Linetype", choices = list("line","point"), selected = list("line")),
-       numericInput('hline', label = 'Add cutoffs: y = ?',
-                    value=0, min=0)
+       br()
+       # br(),
+       # h5("Units"),
+       # numericInput('convert', label = 'Drug MW (g/mol) (optional)',
+       #              value=0, min=0),
+       # radioButtons('uM', label = "convert to uM", choices = list("yes","no"), selected = list("no")),
+       # br(),
+       # h5("Aesthetics"),
+       # radioButtons('geom', label = "Linetype", choices = list("line","point"), selected = list("line")),
+       # numericInput('hline', label = 'Add cutoffs: y = ?',
+       #              value=0, min=0)
        #log y axis
        #drug concentration
        #draw cutoffs
@@ -128,7 +129,7 @@ body <- dashboardBody(
 
 # We'll save it in a variable `ui` so that we can preview it in the console
 ui <- dashboardPage(skin="black",
-  dashboardHeader(title = "PK simulator"),
+  dashboardHeader(title = "Bootcamp 2020 PK simulator"),
   dashboardSidebar(disable=T),
   body
 )
