@@ -8,7 +8,7 @@ body <- dashboardBody(
  fluidRow(
    column(width=3,
       box(title="About", width=NULL, solidHeader = T, status="primary", collapsible = T, collapsed=T,
-          "This Shiny App was developed to be used as an educational tool to understand common PK concepts. Adapted from PMX solutions."), 
+          "This Shiny App was developed as an educational tool to understand common PK concepts. Adapted from PMX solutions."), 
       box(
         title = "Observed Data", width = NULL, solidHeader = TRUE, collapsible=T, collapsed=T,
         radioButtons(inputId = 'DOSE',
